@@ -113,25 +113,6 @@ public class Controller {
         displayQuestionData(questionCounter);
     }
 
-    public void handleCorrectAnswer(Button button, Question question) {
-        button.setStyle("-fx-background-color: #32cd32");
-        score = score + question.getScore();
-        if(!isLastQuestion) {
-            result.setText("Congratulations! You have answered this question correctly. Your current score is " + score + " points.");
-            nextButton.setStyle("-fx-background-color: #90ee90");
-        } else {
-            result.setText("Congratulations! You have become a millionaire! Your current score is " + score + " points.");
-        }
-    }
-
-    public void handleIncorrectAnswer(Button button) {
-        button.setStyle("-fx-background-color: #ff0000");
-        result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
-        if(!isLastQuestion) {
-            nextButton.setDisable(true);
-        }
-    }
-
     public void handleAnsweringQuestion(Button button) {
         String questionText = question.getText();
         QuestionsBank questionBank = new QuestionsBank();
@@ -153,6 +134,25 @@ public class Controller {
             handleCorrectAnswer(button, currentQuestion);
         } else {
             handleIncorrectAnswer(button);
+        }
+    }
+
+    public void handleCorrectAnswer(Button button, Question question) {
+        button.setStyle("-fx-background-color: #32cd32");
+        score = score + question.getScore();
+        if(!isLastQuestion) {
+            result.setText("Congratulations! You have answered this question correctly. Your current score is " + score + " points.");
+            nextButton.setStyle("-fx-background-color: #90ee90");
+        } else {
+            result.setText("Congratulations! You have become a millionaire! Your current score is " + score + " points.");
+        }
+    }
+
+    public void handleIncorrectAnswer(Button button) {
+        button.setStyle("-fx-background-color: #ff0000");
+        result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
+        if(!isLastQuestion) {
+            nextButton.setDisable(true);
         }
     }
 }
