@@ -14,7 +14,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class Controller {
     @FXML private Button signInButton;
@@ -26,16 +29,45 @@ public class Controller {
     @FXML private Text question;
     @FXML private Text result;
 
-    @FXML public void displayQuestionData() {
-        QuestionsBank questionBank = new QuestionsBank();
-        Question question1 = questionBank.allQuestions.get(0);
-        String questionText = question1.getQuestion();
-        String answerOption1 = question1.getAnswersOptions()[0].getAnswer();
-        String answerOption2 = question1.getAnswersOptions()[1].getAnswer();
-        String answerOption3 = question1.getAnswersOptions()[2].getAnswer();
-        String answerOption4 = question1.getAnswersOptions()[3].getAnswer();
-        nextButton.setStyle("-fx-background-color: #DCDCDC");
+    public static int questionCounter;
+
+    public static boolean isLastQuestion;
+
+    public static int score;
+
+    public Question getLevelQuestion(int level) {
+        QuestionsBank questionsBank = new QuestionsBank();
+        List<Question> questionsList = questionsBank.getAllQuestions();
+        Random rand = new Random();
+        int r = rand.nextInt(3);
+        List<Question> levelQuestions = new ArrayList<Question>();
+        for (Question question : questionsList) {
+            if (question.getLevel() == level) {
+                levelQuestions.add(question);
+            }
+        }
+        Question currentQuestion = levelQuestions.get(r);
+        return currentQuestion;
+    }
+
+    @FXML public void displayQuestionData(int level) {
+        Question currentQuestion = getLevelQuestion(level);
+        String questionText =currentQuestion.getQuestion();
+        String answerOption1 = currentQuestion.getAnswersOptions()[0].getAnswer();
+        String answerOption2 = currentQuestion.getAnswersOptions()[1].getAnswer();
+        String answerOption3 = currentQuestion.getAnswersOptions()[2].getAnswer();
+        String answerOption4 = currentQuestion.getAnswersOptions()[3].getAnswer();
+        result.setText("");
+        nextButton.setStyle("-fx-background-color: #dcdcdc");
         question.setText(questionText);
+        option1Button.setDisable(false);
+        option2Button.setDisable(false);
+        option3Button.setDisable(false);
+        option4Button.setDisable(false);
+        option1Button.setStyle("-fx-background-color: #dcdcdc");
+        option2Button.setStyle("-fx-background-color: #dcdcdc");
+        option3Button.setStyle("-fx-background-color: #dcdcdc");
+        option4Button.setStyle("-fx-background-color: #dcdcdc");
         option1Button.setText(answerOption1);
         option2Button.setText(answerOption2);
         option3Button.setText(answerOption3);
@@ -48,7 +80,10 @@ public class Controller {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
         Parent root = fxmlLoader.load();
         Controller controller = fxmlLoader.<Controller>getController();
-        controller.displayQuestionData();
+        questionCounter = 1;
+        isLastQuestion = false;
+        score = 0;
+        controller.displayQuestionData(questionCounter);
         Stage newStage = new Stage();
         newStage.initModality(Modality.APPLICATION_MODAL);
         newStage.setOpacity(1);
@@ -57,107 +92,85 @@ public class Controller {
         newStage.show();
     }
 
-    public void handleChooseOption1Action(ActionEvent actionEvent) {
+    public void handleCorrectAnswer(Button button, Question question) {
+        button.setStyle("-fx-background-color: #32cd32");
+        score = score + question.getScore();
+        if(!isLastQuestion) {
+            result.setText("Congratulations! You have answered this question correctly. Your current score is " + score + " points.");
+            nextButton.setStyle("-fx-background-color: #90ee90");
+        } else {
+            result.setText("Congratulations! You have become a millionaire! Your current score is " + score + " points.");
+        }
+    }
+
+    public void handleIncorrectAnswer(Button button) {
+        button.setStyle("-fx-background-color: #ff0000");
+        result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
+        if(!isLastQuestion) {
+            nextButton.setDisable(true);
+        }
+    }
+
+    public void handleAnsweringQuestion(Button button) {
+        String questionText = question.getText();
         QuestionsBank questionBank = new QuestionsBank();
-        Question question1 = questionBank.allQuestions.get(0);
+        Question currentQuestion = null;
+        for (int i=0; i<questionBank.getAllQuestions().size(); i++) {
+            if (questionText.equals(questionBank.getAllQuestions().get(i).getQuestion())) {
+                currentQuestion = questionBank.getAllQuestions().get(i);
+                break;
+            }
+        }
         Answer currentAnswerOption = null;
-        for (int i=0; i<question1.getAnswersOptions().length; i++) {
-            if (option1Button.getText().equals(question1.getAnswersOptions()[i].getAnswer())) {
-                currentAnswerOption = question1.getAnswersOptions()[i];
+        for (int i=0; i<currentQuestion.getAnswersOptions().length; i++) {
+            if (button.getText().equals(currentQuestion.getAnswersOptions()[i].getAnswer())) {
+                currentAnswerOption = currentQuestion.getAnswersOptions()[i];
                 break;
             }
         }
         if (currentAnswerOption.isCorrect()) {
-            option1Button.setStyle("-fx-background-color: #32cd32");
-            int correctAnswerOnQuestion1Score = question1.getScore();
-            result.setText("Congratulations! You have answered this question correctly. Your current score is " + correctAnswerOnQuestion1Score + " points.");
-            nextButton.setStyle("-fx-background-color: #90ee90");
+            handleCorrectAnswer(button, currentQuestion);
         } else {
-            option1Button.setStyle("-fx-background-color: #ff0000");
-            result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
-            nextButton.setStyle("-fx-background-color: #dcdcdc");
+            handleIncorrectAnswer(button);
         }
-        option2Button.setStyle("-fx-background-color: #dcdcdc");
-        option3Button.setStyle("-fx-background-color: #dcdcdc");
-        option4Button.setStyle("-fx-background-color: #dcdcdc");
+    }
+
+    public void handleChooseOption1Action(ActionEvent actionEvent) {
+        handleAnsweringQuestion(option1Button);
+        option2Button.setDisable(true);
+        option3Button.setDisable(true);
+        option4Button.setDisable(true);
     }
 
     public void handleChooseOption2Action(ActionEvent actionEvent) {
-        QuestionsBank questionBank = new QuestionsBank();
-        Question question1 = questionBank.allQuestions.get(0);
-        Answer currentAnswerOption = null;
-        for (int i=0; i<question1.getAnswersOptions().length; i++) {
-            if (option2Button.getText().equals(question1.getAnswersOptions()[i].getAnswer())) {
-                currentAnswerOption = question1.getAnswersOptions()[i];
-                break;
-            }
-        }
-        if (currentAnswerOption.isCorrect()) {
-            option2Button.setStyle("-fx-background-color: #32cd32");
-            int correctAnswerOnQuestion1Score = question1.getScore();
-            result.setText("Congratulations! You have answered this question correctly. Your current score is " + correctAnswerOnQuestion1Score + " points.");
-            nextButton.setStyle("-fx-background-color: #90ee90");
-        } else {
-            option2Button.setStyle("-fx-background-color: #ff0000");
-            result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
-            // result.setStyle("-fx-text-fill: #ff0000");
-            nextButton.setStyle("-fx-background-color: #dcdcdc");
-        }
-        option1Button.setStyle("-fx-background-color: #dcdcdc");
-        option3Button.setStyle("-fx-background-color: #dcdcdc");
-        option4Button.setStyle("-fx-background-color: #dcdcdc");
+        handleAnsweringQuestion(option2Button);
+        option1Button.setDisable(true);
+        option3Button.setDisable(true);
+        option4Button.setDisable(true);
     }
 
     public void handleChooseOption3Action(ActionEvent actionEvent) {
-        QuestionsBank questionBank = new QuestionsBank();
-        Question question1 = questionBank.allQuestions.get(0);
-        Answer currentAnswerOption = null;
-        for (int i=0; i<question1.getAnswersOptions().length; i++) {
-            if (option3Button.getText().equals(question1.getAnswersOptions()[i].getAnswer())) {
-                currentAnswerOption = question1.getAnswersOptions()[i];
-                break;
-            }
-        }
-        if (currentAnswerOption.isCorrect()) {
-            option3Button.setStyle("-fx-background-color: #32cd32");
-            int correctAnswerOnQuestion1Score = question1.getScore();
-            result.setText("Congratulations! You have answered this question correctly. Your current score is " + correctAnswerOnQuestion1Score + " points.");
-            nextButton.setStyle("-fx-background-color: #90ee90");
-        } else {
-            option3Button.setStyle("-fx-background-color: #ff0000");
-            result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
-            nextButton.setStyle("-fx-background-color: #dcdcdc");
-        }
-        option1Button.setStyle("-fx-background-color: #dcdcdc");
-        option2Button.setStyle("-fx-background-color: #dcdcdc");
-        option4Button.setStyle("-fx-background-color: #dcdcdc");
+        handleAnsweringQuestion(option3Button);
+        option1Button.setDisable(true);
+        option2Button.setDisable(true);
+        option4Button.setDisable(true);
     }
 
     public void handleChooseOption4Action(ActionEvent actionEvent) {
-        QuestionsBank questionBank = new QuestionsBank();
-        Question question1 = questionBank.allQuestions.get(0);
-        Answer currentAnswerOption = null;
-        for (int i=0; i<question1.getAnswersOptions().length; i++) {
-            if (option4Button.getText().equals(question1.getAnswersOptions()[i].getAnswer())) {
-                currentAnswerOption = question1.getAnswersOptions()[i];
-                break;
-            }
-        }
-        if (currentAnswerOption.isCorrect()) {
-            option4Button.setStyle("-fx-background-color: #32cd32");
-            int correctAnswerOnQuestion1Score = question1.getScore();
-            result.setText("Congratulations! You have answered this question correctly. Your current score is " + correctAnswerOnQuestion1Score + " points.");
-            nextButton.setStyle("-fx-background-color: #90ee90");
-        } else {
-            option4Button.setStyle("-fx-background-color: #ff0000");
-            result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
-            nextButton.setStyle("-fx-background-color: #dcdcdc");
-        }
-        option1Button.setStyle("-fx-background-color: #dcdcdc");
-        option2Button.setStyle("-fx-background-color: #dcdcdc");
-        option3Button.setStyle("-fx-background-color: #dcdcdc");
+        handleAnsweringQuestion(option4Button);
+        option1Button.setDisable(true);
+        option2Button.setDisable(true);
+        option3Button.setDisable(true);
     }
 
     public void handleMoveToNextQuestionAction(ActionEvent actionEvent) {
+        ++questionCounter;
+        QuestionsBank questionsBank = new QuestionsBank();
+        if (questionCounter == questionsBank.numberOfLevels) {
+            nextButton.setDisable(true);
+            isLastQuestion = true;
+        }
+        System.out.println(questionCounter);
+        displayQuestionData(questionCounter);
     }
 }
