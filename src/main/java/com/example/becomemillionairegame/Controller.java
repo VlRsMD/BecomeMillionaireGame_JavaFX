@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class Controller {
@@ -28,30 +27,31 @@ public class Controller {
     @FXML private Button nextButton;
     @FXML private Text question;
     @FXML private Text result;
-
     public static int questionCounter;
-
     public static boolean isLastQuestion;
-
     public static int score;
 
-    public Question getLevelQuestion(int level) {
-        QuestionsBank questionsBank = new QuestionsBank();
-        List<Question> questionsList = questionsBank.getAllQuestions();
-        Random rand = new Random();
-        int r = rand.nextInt(3);
-        List<Question> levelQuestions = new ArrayList<Question>();
-        for (Question question : questionsList) {
-            if (question.getLevel() == level) {
-                levelQuestions.add(question);
-            }
-        }
-        Question currentQuestion = levelQuestions.get(r);
-        return currentQuestion;
+    @FXML protected void handleSubmitButtonAction(ActionEvent event) throws IOException {
+        Stage stage = (Stage) signInButton.getScene().getWindow();
+        stage.close();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
+        Parent root = fxmlLoader.load();
+        Controller controller = fxmlLoader.<Controller>getController();
+        questionCounter = 1;
+        isLastQuestion = false;
+        score = 0;
+        controller.displayQuestionData(questionCounter);
+        Stage newStage = new Stage();
+        newStage.initModality(Modality.APPLICATION_MODAL);
+        newStage.setOpacity(1);
+        newStage.setTitle("Play the game!");
+        newStage.setScene(new Scene(root, 450, 450));
+        newStage.show();
     }
 
-    @FXML public void displayQuestionData(int level) {
-        Question currentQuestion = getLevelQuestion(level);
+    @FXML protected void displayQuestionData(int level) {
+        QuestionExtractor questionExtractor = new QuestionExtractor();
+        Question currentQuestion = questionExtractor.getSpecificLevelQuestion(level);
         String questionText =currentQuestion.getQuestion();
         String answerOption1 = currentQuestion.getAnswersOptions()[0].getAnswer();
         String answerOption2 = currentQuestion.getAnswersOptions()[1].getAnswer();
@@ -74,22 +74,43 @@ public class Controller {
         option4Button.setText(answerOption4);
     }
 
-    @FXML protected void handleSubmitButtonAction(ActionEvent event) throws IOException {
-        Stage stage = (Stage) signInButton.getScene().getWindow();
-        stage.close();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
-        Parent root = fxmlLoader.load();
-        Controller controller = fxmlLoader.<Controller>getController();
-        questionCounter = 1;
-        isLastQuestion = false;
-        score = 0;
-        controller.displayQuestionData(questionCounter);
-        Stage newStage = new Stage();
-        newStage.initModality(Modality.APPLICATION_MODAL);
-        newStage.setOpacity(1);
-        newStage.setTitle("Play the game!");
-        newStage.setScene(new Scene(root, 450, 450));
-        newStage.show();
+    public void handleChooseAnswerOption1Action(ActionEvent actionEvent) {
+        handleAnsweringQuestion(option1Button);
+        option2Button.setDisable(true);
+        option3Button.setDisable(true);
+        option4Button.setDisable(true);
+    }
+
+    public void handleChooseAnswerOption2Action(ActionEvent actionEvent) {
+        handleAnsweringQuestion(option2Button);
+        option1Button.setDisable(true);
+        option3Button.setDisable(true);
+        option4Button.setDisable(true);
+    }
+
+    public void handleChooseAnswerOption3Action(ActionEvent actionEvent) {
+        handleAnsweringQuestion(option3Button);
+        option1Button.setDisable(true);
+        option2Button.setDisable(true);
+        option4Button.setDisable(true);
+    }
+
+    public void handleChooseAnswerOption4Action(ActionEvent actionEvent) {
+        handleAnsweringQuestion(option4Button);
+        option1Button.setDisable(true);
+        option2Button.setDisable(true);
+        option3Button.setDisable(true);
+    }
+
+    public void handleMoveToNextQuestionAction(ActionEvent actionEvent) {
+        ++questionCounter;
+        QuestionsBank questionsBank = new QuestionsBank();
+        if (questionCounter == questionsBank.numberOfLevels) {
+            nextButton.setDisable(true);
+            isLastQuestion = true;
+        }
+        System.out.println(questionCounter);
+        displayQuestionData(questionCounter);
     }
 
     public void handleCorrectAnswer(Button button, Question question) {
@@ -133,44 +154,5 @@ public class Controller {
         } else {
             handleIncorrectAnswer(button);
         }
-    }
-
-    public void handleChooseOption1Action(ActionEvent actionEvent) {
-        handleAnsweringQuestion(option1Button);
-        option2Button.setDisable(true);
-        option3Button.setDisable(true);
-        option4Button.setDisable(true);
-    }
-
-    public void handleChooseOption2Action(ActionEvent actionEvent) {
-        handleAnsweringQuestion(option2Button);
-        option1Button.setDisable(true);
-        option3Button.setDisable(true);
-        option4Button.setDisable(true);
-    }
-
-    public void handleChooseOption3Action(ActionEvent actionEvent) {
-        handleAnsweringQuestion(option3Button);
-        option1Button.setDisable(true);
-        option2Button.setDisable(true);
-        option4Button.setDisable(true);
-    }
-
-    public void handleChooseOption4Action(ActionEvent actionEvent) {
-        handleAnsweringQuestion(option4Button);
-        option1Button.setDisable(true);
-        option2Button.setDisable(true);
-        option3Button.setDisable(true);
-    }
-
-    public void handleMoveToNextQuestionAction(ActionEvent actionEvent) {
-        ++questionCounter;
-        QuestionsBank questionsBank = new QuestionsBank();
-        if (questionCounter == questionsBank.numberOfLevels) {
-            nextButton.setDisable(true);
-            isLastQuestion = true;
-        }
-        System.out.println(questionCounter);
-        displayQuestionData(questionCounter);
     }
 }

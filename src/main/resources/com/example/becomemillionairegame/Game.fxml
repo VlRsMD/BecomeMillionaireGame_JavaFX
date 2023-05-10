@@ -9,10 +9,10 @@
 <Pane maxHeight="450.0" maxWidth="450" prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.becomemillionairegame.Controller">
    <padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
    <Text fx:id="question" layoutX="80.0" layoutY="100.0" textAlignment="CENTER" wrappingWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-   <Button fx:id="nextButton" layoutX="305.0" layoutY="340.0" maxHeight="25.0" maxWidth="132.0" onAction="#handleMoveToNextQuestionAction" prefHeight="25.0" prefWidth="70.0" text="Next" textAlignment="CENTER" />
-   <Button fx:id="option4Button" layoutX="275.0" layoutY="205.0" maxHeight="25.0" maxWidth="100.0" onAction="#handleChooseOption4Action" prefWidth="100.0" />
-   <Button fx:id="option3Button" layoutX="275.0" layoutY="140.0" maxHeight="25.0" maxWidth="100.0" onAction="#handleChooseOption3Action" prefWidth="100.0" />
-   <Button fx:id="option2Button" layoutX="80.0" layoutY="205.0" onAction="#handleChooseOption2Action" prefWidth="100.0" />
-   <Button fx:id="option1Button" layoutX="80.0" layoutY="140.0" maxHeight="100.0" maxWidth="100.0" onAction="#handleChooseOption1Action" prefWidth="100.0" />
+   <Button fx:id="option1Button" layoutX="80.0" layoutY="140.0" maxHeight="100.0" maxWidth="100.0" onAction="#handleChooseAnswerOption1Action" prefWidth="100.0" />
+   <Button fx:id="option2Button" layoutX="80.0" layoutY="205.0" onAction="#handleChooseAnswerOption2Action" prefWidth="100.0" />
+   <Button fx:id="option3Button" layoutX="275.0" layoutY="140.0" maxHeight="25.0" maxWidth="100.0" onAction="#handleChooseAnswerOption3Action" prefWidth="100.0" />
+   <Button fx:id="option4Button" layoutX="275.0" layoutY="205.0" maxHeight="25.0" maxWidth="100.0" onAction="#handleChooseAnswerOption4Action" prefWidth="100.0" />
    <Text fx:id="result" layoutX="80.0" layoutY="285.0" textAlignment="CENTER" wrappingWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+   <Button fx:id="nextButton" layoutX="305.0" layoutY="340.0" maxHeight="25.0" maxWidth="132.0" onAction="#handleMoveToNextQuestionAction" prefHeight="25.0" prefWidth="70.0" text="Next" textAlignment="CENTER" />
 </Pane>
