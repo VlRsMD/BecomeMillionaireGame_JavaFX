@@ -120,7 +120,6 @@ public class Controller {
             nextButton.setDisable(true);
             isLastQuestion = true;
         }
-        System.out.println(questionCounter);
         displayQuestionData(questionCounter);
     }
 
