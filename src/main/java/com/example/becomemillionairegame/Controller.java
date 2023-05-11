@@ -3,30 +3,34 @@ package com.example.becomemillionairegame;
 import com.example.becomemillionairegame.questions_data.Answer;
 import com.example.becomemillionairegame.questions_data.Question;
 import com.example.becomemillionairegame.questions_data.QuestionsBank;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Controller {
     @FXML private Button signInButton;
+    @FXML private Text question;
     @FXML private Button option1Button;
     @FXML private Button option2Button;
     @FXML private Button option3Button;
     @FXML private Button option4Button;
-    @FXML private Button nextButton;
-    @FXML private Text question;
     @FXML private Text result;
+    @FXML private Button nextButton;
     public static int questionCounter;
     public static boolean isLastQuestion;
     public static int score;
@@ -53,25 +57,32 @@ public class Controller {
         QuestionExtractor questionExtractor = new QuestionExtractor();
         Question currentQuestion = questionExtractor.getSpecificLevelQuestion(level);
         String questionText =currentQuestion.getQuestion();
-        String answerOption1 = currentQuestion.getAnswersOptions()[0].getAnswer();
-        String answerOption2 = currentQuestion.getAnswersOptions()[1].getAnswer();
-        String answerOption3 = currentQuestion.getAnswersOptions()[2].getAnswer();
-        String answerOption4 = currentQuestion.getAnswersOptions()[3].getAnswer();
-        result.setText("");
-        nextButton.setStyle("-fx-background-color: #dcdcdc");
+        List<Answer> answerOptions = new ArrayList<Answer>();
+        for (int i=0; i<currentQuestion.getAnswersOptions().length; i++) {
+            answerOptions.add(currentQuestion.getAnswersOptions()[i]);
+        }
+        Collections.shuffle(answerOptions);
+        String answerOption1 = answerOptions.get(0).getAnswer();
+        String answerOption2 = answerOptions.get(1).getAnswer();
+        String answerOption3 = answerOptions.get(2).getAnswer();
+        String answerOption4 = answerOptions.get(3).getAnswer();
+        question.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
         question.setText(questionText);
         option1Button.setDisable(false);
         option2Button.setDisable(false);
         option3Button.setDisable(false);
         option4Button.setDisable(false);
-        option1Button.setStyle("-fx-background-color: #dcdcdc");
-        option2Button.setStyle("-fx-background-color: #dcdcdc");
-        option3Button.setStyle("-fx-background-color: #dcdcdc");
-        option4Button.setStyle("-fx-background-color: #dcdcdc");
+        option1Button.setStyle("-fx-background-color: #00ffff");
+        option2Button.setStyle("-fx-background-color: #00ffff");
+        option3Button.setStyle("-fx-background-color: #00ffff");
+        option4Button.setStyle("-fx-background-color: #00ffff");
         option1Button.setText(answerOption1);
         option2Button.setText(answerOption2);
         option3Button.setText(answerOption3);
         option4Button.setText(answerOption4);
+        result.setText("");
+        nextButton.setDisable(true);
+        nextButton.setStyle("-fx-background-color: #ffd700");
     }
 
     public void handleChooseAnswerOption1Action(ActionEvent actionEvent) {
@@ -141,15 +152,19 @@ public class Controller {
         button.setStyle("-fx-background-color: #32cd32");
         score = score + question.getScore();
         if(!isLastQuestion) {
+            result.setFill(Color.GREEN);
             result.setText("Congratulations! You have answered this question correctly. Your current score is " + score + " points.");
-            nextButton.setStyle("-fx-background-color: #90ee90");
+            nextButton.setDisable(false);
         } else {
+            result.setFill(Color.DARKGOLDENROD);
             result.setText("Congratulations! You have become a millionaire! Your current score is " + score + " points.");
+
         }
     }
 
     public void handleIncorrectAnswer(Button button) {
         button.setStyle("-fx-background-color: #ff0000");
+        result.setFill(Color.RED);
         result.setText("Unfortunately you have answered incorrectly. You may wish to try the game once again!");
         if(!isLastQuestion) {
             nextButton.setDisable(true);
