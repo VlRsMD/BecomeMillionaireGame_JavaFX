@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="450.0" maxWidth="450" prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.becomemillionairegame.Controller">
-   <padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
+<Pane prefHeight="620.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.becomemillionairegame.Controller">
    <Text fx:id="question" layoutX="80.0" layoutY="100.0" textAlignment="CENTER" wrappingWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-   <Button fx:id="option1Button" layoutX="62.0" layoutY="140.0" onAction="#handleChooseAnswerOption1Action" prefWidth="140.0" />
-   <Button fx:id="option2Button" layoutX="62.0" layoutY="205.0" onAction="#handleChooseAnswerOption2Action" prefWidth="140.0" />
-   <Button fx:id="option3Button" layoutX="255.0" layoutY="140.0" onAction="#handleChooseAnswerOption3Action" prefWidth="140.0" />
-   <Button fx:id="option4Button" layoutX="255.0" layoutY="205.0" onAction="#handleChooseAnswerOption4Action" prefWidth="140.0" />
-   <Text fx:id="result" layoutX="80.0" layoutY="285.0" textAlignment="CENTER" wrappingWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-   <Button fx:id="nextButton" layoutX="315.0" layoutY="340.0" onAction="#handleMoveToNextQuestionAction" prefWidth="80.0" text="Next" textAlignment="CENTER" />
+   <Button fx:id="option1Button" layoutX="62.0" layoutY="140.0" onAction="#handleChooseAnswerOption1Action" prefWidth="155.0" />
+   <Button fx:id="option2Button" layoutX="62.0" layoutY="205.0" onAction="#handleChooseAnswerOption2Action" prefWidth="155.0" />
+   <Button fx:id="option3Button" layoutX="255.0" layoutY="140.0" onAction="#handleChooseAnswerOption3Action" prefWidth="155.0" />
+   <Button fx:id="option4Button" layoutX="255.0" layoutY="205.0" onAction="#handleChooseAnswerOption4Action" prefWidth="155.0" />
+   <Text fx:id="helpText" layoutX="180.0" layoutY="290.0" text="Help options:" textAlignment="CENTER" wrappingWidth="90.0" />
+   <Button fx:id="askAudienceButton" layoutX="62.0" layoutY="310.0" onAction="#displayAskAudienceHelpOption" prefHeight="25.0" prefWidth="140.0" text="Ask the audience" />
+   <Button fx:id="phoneFriendButton" layoutX="255.0" layoutY="310.0" onAction="#displayPhoneFriendHelpOption" prefHeight="25.0" prefWidth="140.0" text="Phone a friend" />
+   <Button fx:id="fiftyFiftyButton" layoutX="155.0" layoutY="360.0" onAction="#displayFiftyFiftyHelpOption" prefHeight="25.0" prefWidth="140.0" text="50/50" />
+   <Text fx:id="result" layoutX="80.0" layoutY="440.0" textAlignment="CENTER" wrappingWidth="296.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+   <Button fx:id="nextButton" layoutX="315.0" layoutY="500.0" onAction="#handleMoveToNextQuestionAction" prefWidth="80.0" text="Next" textAlignment="CENTER" />
 </Pane>

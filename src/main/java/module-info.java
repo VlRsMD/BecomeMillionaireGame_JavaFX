@@ -14,6 +14,6 @@ module com.example.becomemillionairegame {
 
     opens com.example.becomemillionairegame to javafx.fxml;
     exports com.example.becomemillionairegame;
-    exports com.example.becomemillionairegame.questions_data;
-    opens com.example.becomemillionairegame.questions_data to javafx.fxml;
+    exports com.example.becomemillionairegame.questionsdata;
+    opens com.example.becomemillionairegame.questionsdata to javafx.fxml;
 }

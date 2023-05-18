@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane prefHeight="360.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.becomemillionairegame.Controller">
+   <children>
+      <Text fx:id="welcomeText" layoutX="76.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the game &quot;Become a Millionaire&quot;" textAlignment="CENTER" wrappingWidth="300.0" />
+      <Text layoutX="74.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player Name:" />
+      <TextField fx:id="playerName" layoutX="168.0" layoutY="152.0" prefHeight="25.0" prefWidth="210.0" />
+      <Text fx:id="reminder" layoutX="148.0" layoutY="205.0" textAlignment="CENTER" wrappingWidth="155.0" />
+      <Button fx:id="playButton" layoutX="190.0" layoutY="230.0" onAction="#startTheGame" prefHeight="25.0" prefWidth="70.0" text="Play" />
+   </children>
+</Pane>

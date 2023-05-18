@@ -1,4 +1,4 @@
-package com.example.becomemillionairegame.questions_data;
+package com.example.becomemillionairegame.questionsdata;
 
 public class Answer {
     private String answer;
