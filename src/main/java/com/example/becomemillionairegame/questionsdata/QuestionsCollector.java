@@ -1,15 +1,11 @@
-package com.example.becomemillionairegame.questions_data;
+package com.example.becomemillionairegame.questionsdata;
 
-import com.example.becomemillionairegame.questions_data.Question;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class QuestionsCollector {
     public List<Question> collectQuestions() throws IOException {
@@ -38,5 +34,20 @@ public class QuestionsCollector {
             }
         }
         return max;
+    }
+
+    public Map<Integer, List<Question>> getMapForSpecificLevelsQuestions() throws IOException {
+        Map<Integer, List<Question>> specificLevelsQuestionsMap = new HashMap<>();
+        for(int i=0; i<findNumberOfLevels(); i++) {
+            int currentLevel = i+1;
+            List<Question> currentLevelQuestions = new ArrayList<>();
+            for (int j=0; j<collectQuestions().size(); j++) {
+                if(collectQuestions().get(j).getLevel() == currentLevel) {
+                    currentLevelQuestions.add(collectQuestions().get(j));
+                }
+            }
+            specificLevelsQuestionsMap.put(currentLevel, currentLevelQuestions);
+        }
+        return specificLevelsQuestionsMap;
     }
 }

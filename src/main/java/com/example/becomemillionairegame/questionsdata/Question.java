@@ -1,6 +1,4 @@
-package com.example.becomemillionairegame.questions_data;
-
-import com.example.becomemillionairegame.questions_data.Answer;
+package com.example.becomemillionairegame.questionsdata;
 
 import java.util.UUID;
 
