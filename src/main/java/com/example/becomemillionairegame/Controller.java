@@ -136,6 +136,7 @@ public class Controller {
             add(option4Button);
         }};
         disableButtons(buttons);
+        disableHelpOptionsButtons();
     }
 
     public void handleChooseAnswerOption2Action(ActionEvent actionEvent) {
@@ -146,6 +147,7 @@ public class Controller {
             add(option4Button);
         }};
         disableButtons(buttons);
+        disableHelpOptionsButtons();
     }
 
     public void handleChooseAnswerOption3Action(ActionEvent actionEvent) {
@@ -156,6 +158,7 @@ public class Controller {
             add(option4Button);
         }};
         disableButtons(buttons);
+        disableHelpOptionsButtons();
     }
 
     public void handleChooseAnswerOption4Action(ActionEvent actionEvent) {
@@ -166,6 +169,7 @@ public class Controller {
             add(option3Button);
         }};
         disableButtons(buttons);
+        disableHelpOptionsButtons();
     }
 
     public void handleAnsweringQuestion(Button button) {
@@ -217,6 +221,12 @@ public class Controller {
         for (Button button : buttons) {
             button.setDisable(true);
         }
+    }
+
+    public void disableHelpOptionsButtons() {
+        askAudienceButton.setDisable(true);
+        phoneFriendButton.setDisable(true);
+        fiftyFiftyButton.setDisable(true);
     }
 
     public void displayAskAudienceHelpOption(ActionEvent actionEvent) {
